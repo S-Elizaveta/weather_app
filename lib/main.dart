@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(WeatherApp());
 }
 
-class MyApp extends StatelessWidget {
+class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,28 +13,43 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: MyHomePage(),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({
+class HomePage extends StatefulWidget {
+  HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int selectIndex = 0;
-
+class _HomePageState extends State<HomePage> {
+  //int _selectItem = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          child: Container(
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [
+                Colors.amber,
+                Colors.yellow,
+              ],
+            )
+          ),
+            height: 4.0,
+      ),
+      preferredSize: Size.fromHeight(4.0)),
         title: Text('Today'),
       ),
       body: Center(
@@ -42,41 +57,62 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Weather in $selectIndex page',
+              'Weather',
             ),
           ],
-        ), 
+        ),
       ),
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: NavBar(
+      ),
     );
   }
 }
 
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  final int defaultIndex;
+
+  NavBar({
+    this.defaultIndex = 0,
+  });
 
   @override
   _NavBarState createState() => _NavBarState();
 }
 
 class _NavBarState extends State<NavBar> {
+  int _selectIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectIndex = widget.defaultIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      buildNavBarItem(Icons.wb_sunny_outlined, 0),
-      buildNavBarItem(Icons.wb_twighlight, 1)
+      buildNavBarItem(Icons.wb_sunny_outlined, true, 0),
+      buildNavBarItem(Icons.wb_twighlight, false, 1)
     ]);
   }
 
-  Widget buildNavBarItem(IconData icon, int index) {
+  Widget buildNavBarItem(IconData icon, bool choosen, int index) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        setState(() {
+          _selectIndex = index;
+        });
+      },
       child: Container(
         height: 60,
         width: MediaQuery.of(context).size.width / 2,
+        decoration: BoxDecoration(
+          color: index == _selectIndex ? Colors.amber[300] : Colors.amber[100],
+        ),
         child: Icon(
           icon,
-          color: Colors.black,
+          color: index == _selectIndex ? Colors.black : Colors.grey,
         ),
       ),
     );
