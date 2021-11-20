@@ -118,3 +118,19 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
+
+class LoadWeatherData extends StatefulWidget {
+  const LoadWeatherData({ Key? key }) : super(key: key);
+
+  @override
+  _LoadWeatherDataState createState() => _LoadWeatherDataState();
+}
+
+class _LoadWeatherDataState extends State<LoadWeatherData> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+    );
+  }
+}
