@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 void main() {
   runApp(WeatherApp());
@@ -36,20 +39,19 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         elevation: 0,
         bottom: PreferredSize(
-          child: Container(
-            decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Colors.amber,
-                Colors.yellow,
-              ],
-            )
-          ),
-            height: 4.0,
-      ),
-      preferredSize: Size.fromHeight(4.0)),
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Colors.amber,
+                  Colors.yellow,
+                ],
+              )),
+              height: 4.0,
+            ),
+            preferredSize: Size.fromHeight(4.0)),
         title: Text('Today'),
       ),
       body: Center(
@@ -62,8 +64,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(
-      ),
+      bottomNavigationBar: NavBar(),
     );
   }
 }
@@ -120,7 +121,7 @@ class _NavBarState extends State<NavBar> {
 }
 
 class LoadWeatherData extends StatefulWidget {
-  const LoadWeatherData({ Key? key }) : super(key: key);
+  const LoadWeatherData({Key? key}) : super(key: key);
 
   @override
   _LoadWeatherDataState createState() => _LoadWeatherDataState();
@@ -129,8 +130,6 @@ class LoadWeatherData extends StatefulWidget {
 class _LoadWeatherDataState extends State<LoadWeatherData> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }
