@@ -1,7 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+//import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:weather_app/database/weather.dart';
+
+Future<Weather> fetchWeather() async {
+  final response = await http.get(Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?q=Minsk&appid=2e6117b75802a05e156e82f2eb68ccad'));
+
+  if (response.statusCode == 200) {
+    return Weather.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
 
 void main() {
   runApp(WeatherApp());
@@ -31,7 +46,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<Weather> futureWeather;
   //int _selectItem = 0;
+  @override
+  void initState() {
+    super.initState();
+    futureWeather = fetchWeather();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +80,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Weather',
+            FutureBuilder<Weather>(
+              future: futureWeather,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                return Text(snapshot.data!.descrip);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              // By default, show a loading spinner.
+              return const CircularProgressIndicator();
+              },
             ),
           ],
         ),
