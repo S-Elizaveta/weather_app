@@ -1,12 +1,14 @@
 class Weather {
-  final int temp;
+  final String location;
+  final double temp;
   final int humidity;
-  final double pressure;
+  final int pressure;
   final double speed;
   final String descrip;
 
   Weather(
-      {required this.temp,
+      {required this.location,
+      required this.temp,
       required this.humidity,
       required this.pressure,
       required this.speed,
@@ -14,11 +16,12 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
+      location: json['name'],
       temp: json['main']['temp'],
       humidity: json['main']['humidity'],
       pressure: json['main']['pressure'],
       speed: json['wind']['speed'],
-      descrip: json['weather']['description'],
+      descrip: json['weather'][0]['description'],
     );
   }
 }

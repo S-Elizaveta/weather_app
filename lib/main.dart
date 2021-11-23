@@ -8,8 +8,9 @@ import 'package:http/http.dart' as http;
 import 'package:weather_app/database/weather.dart';
 
 Future<Weather> fetchWeather() async {
+  final location = 'Minsk';
   final response = await http.get(Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?q=Minsk&appid=2e6117b75802a05e156e82f2eb68ccad'));
+      'https://api.openweathermap.org/data/2.5/weather?q=$location&appid=2e6117b75802a05e156e82f2eb68ccad'));
 
   if (response.statusCode == 200) {
     return Weather.fromJson(jsonDecode(response.body));
@@ -29,7 +30,7 @@ class WeatherApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weather App',
       theme: ThemeData(
-        primaryColor: Colors.white,
+        primaryColor: Colors.yellow,
       ),
       home: HomePage(),
     );
@@ -58,6 +59,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:Colors.white,
+        foregroundColor: Colors.black,
         centerTitle: true,
         elevation: 0,
         bottom: PreferredSize(
@@ -80,17 +83,35 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              //'${location.toString()}',
+              'Minsk',
+              style: TextStyle(
+                fontSize: 25
+              ),),
             FutureBuilder<Weather>(
               future: futureWeather,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                return Text(snapshot.data!.descrip);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+                  return Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView(
+                      children: [
+                        Text(snapshot.data!.descrip),
+                        Text(snapshot.data!.temp.toString()),
+                        Text(snapshot.data!.humidity.toString()),
+                        Text(snapshot.data!.pressure.toString()),
+                        Text(snapshot.data!.speed.toString()),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
+                // By default, show a loading spinner.
+                return const CircularProgressIndicator();
               },
             ),
           ],
@@ -149,19 +170,5 @@ class _NavBarState extends State<NavBar> {
         ),
       ),
     );
-  }
-}
-
-class LoadWeatherData extends StatefulWidget {
-  const LoadWeatherData({Key? key}) : super(key: key);
-
-  @override
-  _LoadWeatherDataState createState() => _LoadWeatherDataState();
-}
-
-class _LoadWeatherDataState extends State<LoadWeatherData> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
