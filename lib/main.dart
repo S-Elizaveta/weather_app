@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 //import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:weather_app/infoAboutWeather.dart';
 import 'package:weather_app/database/weather.dart';
 
 Future<Weather> fetchWeather() async {
@@ -30,17 +31,28 @@ class WeatherApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weather App',
       theme: ThemeData(
-        primaryColor: Colors.yellow,
-      ),
+          primaryColor: Colors.yellow,
+          highlightColor: Color.fromRGBO(0, 205, 190, 4),
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 23, fontWeight: FontWeight.w400),
+            bodyText1: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            bodyText2: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w300,
+              color: Color.fromRGBO(0, 205, 190, 4),
+            ),
+            button: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+              color: Color.fromRGBO(204, 170, 0, 4),
+            ),
+          )),
       home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({
-    Key? key,
-  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -59,7 +71,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:Colors.white,
+        backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         centerTitle: true,
         elevation: 0,
@@ -79,43 +91,24 @@ class _HomePageState extends State<HomePage> {
             preferredSize: Size.fromHeight(4.0)),
         title: Text('Today'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              //'${location.toString()}',
-              'Minsk',
-              style: TextStyle(
-                fontSize: 25
-              ),),
-            FutureBuilder<Weather>(
-              future: futureWeather,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView(
-                      children: [
-                        Text(snapshot.data!.descrip),
-                        Text(snapshot.data!.temp.toString()),
-                        Text(snapshot.data!.humidity.toString()),
-                        Text(snapshot.data!.pressure.toString()),
-                        Text(snapshot.data!.speed.toString()),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
+      body: FutureBuilder<Weather>(
+        future: futureWeather,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return AboutWeather(
+                location: snapshot.data!.location,
+                temp: snapshot.data!.temp,
+                humidity: snapshot.data!.humidity,
+                pressure: snapshot.data!.pressure,
+                speed: snapshot.data!.speed,
+                descrip: snapshot.data!.descrip);
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
 
-                // By default, show a loading spinner.
-                return const CircularProgressIndicator();
-              },
-            ),
-          ],
-        ),
+          // By default, show a loading spinner.
+          return const CircularProgressIndicator();
+        },
       ),
       bottomNavigationBar: NavBar(),
     );

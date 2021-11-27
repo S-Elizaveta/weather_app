@@ -12,7 +12,8 @@ class Weather {
       required this.humidity,
       required this.pressure,
       required this.speed,
-      required this.descrip});
+      required this.descrip}
+      );
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
