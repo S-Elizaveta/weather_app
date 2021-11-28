@@ -54,17 +54,27 @@ class AboutWeather extends StatelessWidget {
                 ],
               ),
             ),
+            Divider(
+              height: 10,
+              thickness: 1,
+              indent: 60,
+              endIndent: 60,
+            ),
             Expanded(
               child: ListView(
-                padding: EdgeInsets.all(20),
-                scrollDirection: Axis.vertical,
+                scrollDirection: Axis.horizontal,
                 children: [
-                  WeatherTile(
-                      icon: Icons.bubble_chart_outlined, title: '$humidity'),
-                  WeatherTile(icon: Icons.waves_outlined, title: '$pressure'),
-                  WeatherTile(icon: Icons.air_outlined, title: '$speed'),
+                  WeatherCard(icon: Icons.bubble_chart_outlined, title: '$humidity'),
+                  WeatherCard(icon: Icons.waves_outlined, title: '$pressure'),
+                  WeatherCard(icon: Icons.air_outlined, title: '$speed'),
                 ],
               ),
+            ),
+            Divider(
+              height: 10,
+              thickness: 1,
+              indent: 60,
+              endIndent: 60,
             ),
             TextButton(
                 onPressed: () {},
@@ -94,6 +104,33 @@ class WeatherTile extends StatelessWidget {
       title: Text(
         '$title',
         style: Theme.of(context).textTheme.bodyText1,
+      ),
+    );
+  }
+}
+
+class WeatherCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const WeatherCard({
+    required this.title,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.amber),
+          Text(
+            '$title',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
       ),
     );
   }
