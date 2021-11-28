@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             return AboutWeather(
                 location: snapshot.data!.location,
-                temp: snapshot.data!.temp,
+                temp: double.parse((snapshot.data!.temp-273).toStringAsFixed(2)),
                 humidity: snapshot.data!.humidity,
                 pressure: snapshot.data!.pressure,
                 speed: snapshot.data!.speed,

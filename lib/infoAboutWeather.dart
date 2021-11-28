@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/database/weather.dart';
 
 class AboutWeather extends StatelessWidget {
   final String location;
@@ -38,12 +37,16 @@ class AboutWeather extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '$temp',
+                    '$temp℃',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  Divider(height: 5,),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text('|'),
+                  ),
                   Text(
                     '$descrip',
                     style: Theme.of(context).textTheme.bodyText2,
@@ -57,10 +60,8 @@ class AboutWeather extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 children: [
                   WeatherTile(
-                      icon: Icons.bubble_chart_outlined,
-                      title: '$humidity'),
-                  WeatherTile(
-                      icon: Icons.waves_outlined, title: '$pressure'),
+                      icon: Icons.bubble_chart_outlined, title: '$humidity'),
+                  WeatherTile(icon: Icons.waves_outlined, title: '$pressure'),
                   WeatherTile(icon: Icons.air_outlined, title: '$speed'),
                 ],
               ),
