@@ -14,7 +14,8 @@ class AboutWeather extends StatelessWidget {
       required this.humidity,
       required this.pressure,
       required this.speed,
-      required this.descrip});
+      required this.descrip}
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +27,8 @@ class AboutWeather extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: Column(
-                children: [
-                  Text('$location',
-                      style: Theme.of(context).textTheme.headline1),
-                ],
-              ),
-            ),
+            Text('$location',
+                style: Theme.of(context).textTheme.headline1),
             Container(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
@@ -86,28 +81,6 @@ class AboutWeather extends StatelessWidget {
   }
 }
 
-class WeatherTile extends StatelessWidget {
-  IconData icon;
-  String title;
-
-  WeatherTile({required this.icon, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: Colors.amber),
-        ],
-      ),
-      title: Text(
-        '$title',
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-    );
-  }
-}
 
 class WeatherCard extends StatelessWidget {
   final String title;

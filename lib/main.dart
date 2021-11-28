@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-//import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/pages/forecastpage/ForecastPage.dart';
 
-import 'package:weather_app/infoAboutWeather.dart';
+import 'package:weather_app/pages/homepage/HomePage.dart';
 import 'package:weather_app/database/weather.dart';
 
 Future<Weather> fetchWeather() async {
@@ -47,121 +47,48 @@ class WeatherApp extends StatelessWidget {
               color: Color.fromRGBO(204, 170, 0, 4),
             ),
           )),
-      home: HomePage(),
+      home: MainAppPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-
+class MainAppPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MainAppPageState createState() => _MainAppPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late Future<Weather> futureWeather;
-  //int _selectItem = 0;
-  @override
-  void initState() {
-    super.initState();
-    futureWeather = fetchWeather();
-  }
+class _MainAppPageState extends State<MainAppPage> {
+  int _selectItem = 0;
+
+  final screens = [
+    WeatherHomePage(),
+    ForecastPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        centerTitle: true,
-        elevation: 0,
-        bottom: PreferredSize(
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [
-                  Colors.amber,
-                  Colors.yellow,
-                ],
-              )),
-              height: 4.0,
-            ),
-            preferredSize: Size.fromHeight(4.0)),
-        title: Text('Today'),
-      ),
-      body: FutureBuilder<Weather>(
-        future: futureWeather,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return AboutWeather(
-                location: snapshot.data!.location,
-                temp: double.parse((snapshot.data!.temp-273).toStringAsFixed(2)),
-                humidity: snapshot.data!.humidity,
-                pressure: snapshot.data!.pressure,
-                speed: snapshot.data!.speed,
-                descrip: snapshot.data!.descrip);
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
+      body: screens[_selectItem],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectItem,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.wb_sunny_outlined), label: 'Today'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.wb_twighlight,
+              ),
+              label: 'Forecast')
+        ],
+        backgroundColor: Colors.amber[300],
+        selectedItemColor: Colors.black,
+        onTap: (index) {
+          setState(() {
+            _selectItem = index;
+          });
         },
       ),
-      bottomNavigationBar: NavBar(),
     );
-  }
-}
 
-class NavBar extends StatefulWidget {
-  final int defaultIndex;
-
-  NavBar({
-    this.defaultIndex = 0,
-  });
-
-  @override
-  _NavBarState createState() => _NavBarState();
-}
-
-class _NavBarState extends State<NavBar> {
-  int _selectIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectIndex = widget.defaultIndex;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      buildNavBarItem(Icons.wb_sunny_outlined, true, 0),
-      buildNavBarItem(Icons.wb_twighlight, false, 1)
-    ]);
-  }
-
-  Widget buildNavBarItem(IconData icon, bool choosen, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectIndex = index;
-        });
-      },
-      child: Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width / 2,
-        decoration: BoxDecoration(
-          color: index == _selectIndex ? Colors.amber[300] : Colors.amber[100],
-        ),
-        child: Icon(
-          icon,
-          color: index == _selectIndex ? Colors.black : Colors.grey,
-        ),
-      ),
-    );
   }
 }
