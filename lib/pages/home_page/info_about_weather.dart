@@ -14,8 +14,7 @@ class AboutWeather extends StatelessWidget {
       required this.humidity,
       required this.pressure,
       required this.speed,
-      required this.descrip}
-      );
+      required this.descrip});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +26,7 @@ class AboutWeather extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('$location',
-                style: Theme.of(context).textTheme.headline1),
+            Text('$location', style: Theme.of(context).textTheme.headline1),
             Container(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
@@ -59,7 +57,8 @@ class AboutWeather extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  WeatherCard(icon: Icons.bubble_chart_outlined, title: '$humidity'),
+                  WeatherCard(
+                      icon: Icons.bubble_chart_outlined, title: '$humidity'),
                   WeatherCard(icon: Icons.waves_outlined, title: '$pressure'),
                   WeatherCard(icon: Icons.air_outlined, title: '$speed'),
                 ],
@@ -72,15 +71,20 @@ class AboutWeather extends StatelessWidget {
               endIndent: 60,
             ),
             TextButton(
-                onPressed: () {},
-                child: Text('Share', style: Theme.of(context).textTheme.button))
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LatLonPage()),
+                  );
+                },
+                child: Text('Lat/Lon', style: Theme.of(context).textTheme.button)
+                ),
           ],
         ),
       ),
     );
   }
 }
-
 
 class WeatherCard extends StatelessWidget {
   final String title;
@@ -105,6 +109,27 @@ class WeatherCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LatLonPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Lat/Lon'), backgroundColor: Colors.amber),
+      body: Center(
+        child: Column(
+        children: [
+          Text('Something'),
+          TextButton(
+            onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Back to page', style: Theme.of(context).textTheme.button)
+          ),
+        ],
+      )),
     );
   }
 }

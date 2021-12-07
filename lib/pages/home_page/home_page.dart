@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/database/weather.dart';
-import 'package:weather_app/pages/homepage/infoAboutWeather.dart';
+import 'package:weather_app/pages/home_page/info_about_weather.dart';
 import 'package:weather_app/main.dart';
 
 class WeatherHomePage extends StatefulWidget {
@@ -57,7 +57,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
-          return const CircularProgressIndicator();
+          return Center(child: const CircularProgressIndicator());
         },
       ),
     );
