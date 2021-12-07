@@ -117,6 +117,7 @@ class ForecastBodyInfo extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class WeatherTile extends StatelessWidget {
   IconData icon;
   String title;
